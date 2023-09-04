@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:super_app/config.dart';
+import 'package:super_app/models/recipe_model.dart';
+import 'package:super_app/views/recipes_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RecipesHome extends StatefulWidget {
   const RecipesHome({super.key});
@@ -12,6 +16,7 @@ class RecipesHome extends StatefulWidget {
 }
 
 class _RecipesHomeState extends State<RecipesHome> {
+  List<RecipeModel> recipes = [];
   TextEditingController textEditingController=new TextEditingController();
   final apiKey=AppConfig.applicationKey;
   final apiId=AppConfig.applicationId;
@@ -25,7 +30,17 @@ class _RecipesHomeState extends State<RecipesHome> {
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         // Handle the successful response here
-        print("Response body: ${response.body}");
+        Map<String,dynamic> jsonData=jsonDecode(response.body);
+        recipes.clear();
+        jsonData["hits"].forEach((element){
+          // print(element.toString());
+          RecipeModel recipeModel =RecipeModel.fromMap(element["recipe"]);
+          recipes.add(recipeModel);
+        });
+
+
+        // print("${recipes.toString()}");
+        // print(recipes[1].label);
       } else {
         // Handle any error response here
         print("Error: ${response.statusCode}");
@@ -105,7 +120,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                       InkWell(
                         onTap: (){
                           if(textEditingController.text.isNotEmpty){
-                            getRecipes(textEditingController.text);
+                            // getRecipes(textEditingController.text);
                             print("Just Do It!");
                           }else{
                             print("Not Do It!");
@@ -114,10 +129,43 @@ class _RecipesHomeState extends State<RecipesHome> {
                         child: Container(
                           child: Icon(Icons.search,color: Colors.white,),
                         ),
-                      )
+                      ),
+                      SizedBox(width:16,),
                     ],
                   ),
-                )
+                ),
+                FutureBuilder<void>(
+                  future: getRecipes(textEditingController.text),
+                  builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      // Display a loading indicator while fetching data
+                      return Padding(
+                        padding: EdgeInsets.all(30.0), // Adjust the padding as needed
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      // Handle error state
+                      return Text("Error: ${snapshot.error}");
+                    } else {
+                      // Display the recipe cards
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: recipes.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              child: ListTile(
+                                title: Text(recipes[index]?.label ?? "No Label"),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  },
+                ),
+
               ],
             ),
           )
@@ -127,3 +175,4 @@ class _RecipesHomeState extends State<RecipesHome> {
     );
   }
 }
+
