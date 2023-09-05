@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:super_app/views/recipes_home.dart';
+import 'package:super_app/views/plant_doctor_home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(title: 'Super App'),
       routes: {
         '/recipes': (context) => RecipesHome(),
-        '/rainfall': (context) => RainfallPage(),
+        '/doctor': (context) => PlantDoctorHome(),
         '/bmi': (context) => BMIPage(),
       },
     );
@@ -50,9 +51,9 @@ class MyHomePage extends StatelessWidget {
               },
             ),
             CustomCard(
-              title: 'Rainfall',
+              title: 'Plant Doctor',
               onTap: () {
-                Navigator.pushNamed(context, '/rainfall');
+                Navigator.pushNamed(context, '/doctor');
               },
             ),
             CustomCard(
@@ -95,19 +96,6 @@ class CustomCard extends StatelessWidget {
   }
 }
 
-class RainfallPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Rainfall Page'),
-      ),
-      body: Center(
-        child: Text('Rainfall Content Goes Here'),
-      ),
-    );
-  }
-}
 
 class BMIPage extends StatelessWidget {
   @override
