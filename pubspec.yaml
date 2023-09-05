@@ -38,8 +38,10 @@ dependencies:
   http:
   webview_flutter:
   url_launcher:
-  tflite_flutter: ^0.10.1
+  tflite_flutter:
   image_picker:
+  path_provider:
+  path:
 
 
 dev_dependencies:

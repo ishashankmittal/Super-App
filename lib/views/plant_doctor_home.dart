@@ -1,37 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 class PlantDoctorHome extends StatefulWidget {
-  const PlantDoctorHome({super.key});
+  const PlantDoctorHome({Key? key}) : super(key: key);
 
   @override
   State<PlantDoctorHome> createState() => _PlantDoctorHomeState();
 }
 
- class _PlantDoctorHomeState extends State<PlantDoctorHome> {
-//   bool _loading=true;
-//   late File _image;
-//   late List _output;
-//   final picker =Imagepicker();
-//
-//   @override
-//   void initState(){
-//     super.initState();
-//     loadModel().then((value){
-//       setState(() {
-//
-//       });
-//     });
-//   }
-//
-//   @override
-//   void dispose(){
-//     super.dispose();
-//     Tflite.close();
-//   }
-//
-//   classifyImage(File)
+class _PlantDoctorHomeState extends State<PlantDoctorHome> {
+  File? _image; // Declare _image as nullable
+  String? _result; // Store the classification result
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +23,38 @@ class PlantDoctorHome extends StatefulWidget {
       ),
       body: ListView(
         children: [
-
+      Center(
+      child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          if (_image != null) // Display the selected image
+            Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: FileImage(_image!),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          if (_result != null) // Display the classification result
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Classification Result: $_result',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
         ],
+      ),
+    ),
+      ],
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(width: 16),
-          // An example of the extended floating action button.
-          //
-          // https://m3.material.io/components/extended-fab/specs#686cb8af-87c9-48e8-a3e1-db9da6f6c69b
           FloatingActionButton.extended(
             onPressed: pickImage,
             label: const Text('Upload Image'),
@@ -59,15 +63,23 @@ class PlantDoctorHome extends StatefulWidget {
         ],
       ),
     );
+
   }
+
   Future<void> pickImage() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? pickedFile = await _picker.pickImage(
       source: ImageSource.gallery,
     );
+
     if (pickedFile != null) {
-      File image = File(pickedFile!.path);
-      // Now you have the selected image in the 'image' variable
+      setState(() {
+        _image = File(pickedFile.path);
+        print("Image uploaded: ${_image!.path}");
+      });
+
+      // Call the API to classify the image
+      await classifyImage(_image!);
     } else {
       // Handle the case where the user didn't select an image
       showDialog(
@@ -90,4 +102,27 @@ class PlantDoctorHome extends StatefulWidget {
     }
   }
 
+  Future<void> classifyImage(File image) async {
+    final apiUrl = 'https://apitest-6gkp.onrender.com/classify'; // Replace with your API URL
+
+    // Create a multipart request for sending the image
+    final request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+    request.files.add(await http.MultipartFile.fromPath('image', image.path));
+
+    try {
+      final response = await request.send();
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(await response.stream.bytesToString());
+        setState(() {
+          _result = jsonResponse['class_name'];
+          final confidence = jsonResponse['confidence']; // Extract confidence value
+          _result = '$_result (Confidence: $confidence)';
+        });
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 }
