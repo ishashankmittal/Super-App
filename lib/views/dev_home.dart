@@ -21,6 +21,7 @@ class _DeveloperState extends State<Developer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset('assets/images/my_image.jpg'),
             SizedBox(height: 20),
             Text(
               'Shashank Mittal',

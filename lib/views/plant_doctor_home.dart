@@ -194,6 +194,7 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
     try {
       final request = http.MultipartRequest('POST', Uri.parse(apiUrl));
       request.files.add(await http.MultipartFile.fromPath('image', image.path));
+      print(image.path);
       final client = http.Client();
       final response = await client.send(request);
       if (response.statusCode == 200) {

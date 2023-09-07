@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:super_app/views/dev_home.dart';
 import 'package:super_app/views/recipes_home.dart';
@@ -55,7 +58,9 @@ class MyHomePage extends StatelessWidget {
             CustomCard(
               title: 'Plant Doctor',
               onTap: () {
-                Navigator.pushNamed(context, '/doctor');
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => PlantDoctorLoadingScreen(),
+                ));
               },
             ),
             CustomCard(
@@ -102,4 +107,102 @@ class CustomCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class PlantDoctorLoadingScreen extends StatefulWidget {
+  @override
+  _PlantDoctorLoadingScreenState createState() =>
+      _PlantDoctorLoadingScreenState();
+}
+
+class _PlantDoctorLoadingScreenState extends State<PlantDoctorLoadingScreen> {
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    preloadModel().then((isModelPreloaded) {
+      setState(() {
+        isLoading = false;
+      });
+
+      if (isModelPreloaded) {
+        // Navigate to Plant Doctor screen
+        Navigator.pushReplacementNamed(context, '/doctor');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to preload model.'),
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Plant Doctor Loading'),
+      ),
+      body: Center(
+        child: isLoading
+            ? Center(
+              child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+              CircularProgressIndicator(),
+              SizedBox(height: 16.0),
+              Padding(
+                padding: const EdgeInsets.all(70.0),
+                child: Center(
+                  child: Text(
+                    "Please wait while we pre-load the Image Classification Model for you.",
+                    style: TextStyle(fontSize: 18.0),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+          ],
+        ),
+            )
+            : ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Back to Home'),
+        ),
+      ),
+    );
+  }
+}
+
+Future<bool> preloadModel() async {
+  final apiUrl = 'https://apitest-6gkp.onrender.com/classify';
+  bool isOk = false;
+  try {
+    final ByteData imageData =
+    await rootBundle.load('assets/images/my_image.jpg');
+    final buffer = imageData.buffer.asUint8List();
+
+    final request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+    request.files.add(http.MultipartFile.fromBytes(
+      'image',
+      buffer,
+      filename: 'my_image.jpg',
+    ));
+
+    final client = http.Client();
+    final response = await client.send(request);
+
+    if (response.statusCode == 200) {
+      isOk = true;
+      print('Model preloaded successfully.');
+    } else {
+      print('Failed to preload model. Status code: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
+  return isOk;
 }
