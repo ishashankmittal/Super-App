@@ -24,6 +24,8 @@ I have created a Recipe Search feature where the user can enter the ingredient a
 
 For the API request i have used Edamam Recipe Search API .
 
+
+
 ## Plant Doctor (Agri Tech)
 
 This feature employs a TensorFlow Lite classification model, trained on a diverse dataset of plant leaf images. This model helps to recognize and classify various plant diseases, providing users with disease class and a confidence score.
@@ -34,13 +36,19 @@ Dataset used - PlantDoc Dataset for Disease Classification
 https://github.com/pratikkayal/PlantDoc-Dataset
 
 I have used Teachable Machine to train this model. First I downloaded the dataset and uploaded the train images in 28 classes and then trained and exported the .tflite file.
-<img width="1470" alt="Screenshot 2023-09-07 at 6 22 40 PM" src="https://github.com/ishashankmittal/Super-App/assets/117439240/773ed562-5046-4975-9da1-84da54e367ac">
+<img width="800" alt="Screenshot 2023-09-07 at 6 22 40 PM" src="https://github.com/ishashankmittal/Super-App/assets/117439240/0a0c04b9-160c-49d4-a90f-664f6be4fe66">
+
+
 
 Now I wrote a flask Api to handle the ```/classify``` POST requests and hosted the flask app on render.com .
 Link to the api : https://github.com/ishashankmittal/flaskApi
+
+
 
 ## BMI Calculator (Health Tech)
 
 Calculate your Body Mass Index (BMI) instantly by entering your weight (kg) and height (feet and inches). The background color indicates your health status.
 
 The user can input weight and height in kilograms and feet respectively. This feature calculates the BMI and then changes the background color indicating the health status of the user.
+
+
