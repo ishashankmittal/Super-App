@@ -41,7 +41,7 @@ I have used Teachable Machine to train this model. First I downloaded the datase
 
 
 Now I wrote a flask Api to handle the ```/classify``` POST requests and hosted the flask app on render.com .
-Link to the api : https://github.com/ishashankmittal/flaskApi]
+Link to the api : https://github.com/ishashankmittal/flaskApi
 
 
 
