@@ -30,7 +30,7 @@ For the API request i have used Edamam Recipe Search API .
 
 This feature employs a TensorFlow Lite classification model, trained on a diverse dataset of plant leaf images. This model helps to recognize and classify various plant diseases, providing users with disease class and a confidence score.
 
-Warning : In some cases (highly unlikely), the initial POST request might take around one minute to return response, after that we can get quick results. You have to wait, you will definately get the response.
+Fixed the issue of loading time on initial request by creating a dummy Post request as the user clicks on Plant Doctor Card and created a loading page for Plant Doctor.
 
 Dataset used - PlantDoc Dataset for Disease Classification
 https://github.com/pratikkayal/PlantDoc-Dataset
