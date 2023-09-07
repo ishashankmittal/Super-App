@@ -4,7 +4,7 @@ A Flutter App for INTER IIT App Dev Team Selection PS.
 
 Screen Recording Link: https://drive.google.com/file/d/1c-mrxv1hazLIybP35BzHLpmGo8hzBVQi/view?usp=sharing
 
-Debug APK link: [https://drive.google.com/file/d/1UKy4rsPsNKmDXj4Y5pkyPskAHa2-BSU3/view?usp=sharing](https://drive.google.com/file/d/1GNUKPh7SMWuToSSzzU5FlLrRmldjWe6j/view?usp=sharing)
+Debug APK link: https://drive.google.com/file/d/1GNUKPh7SMWuToSSzzU5FlLrRmldjWe6j/view?usp=sharing
 
 ## Getting Started
 
