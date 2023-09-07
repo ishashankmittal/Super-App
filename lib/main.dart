@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:super_app/views/dev_home.dart';
 import 'package:super_app/views/recipes_home.dart';
 import 'package:super_app/views/plant_doctor_home.dart';
+import 'package:super_app/views/bmi_home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/recipes': (context) => RecipesHome(),
         '/doctor': (context) => PlantDoctorHome(),
         '/bmi': (context) => BMIPage(),
+        '/dev': (context) => Developer(),
       },
     );
   }
@@ -62,6 +65,12 @@ class MyHomePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/bmi');
               },
             ),
+            CustomCard(
+              title: 'Developer Info',
+              onTap: () {
+                Navigator.pushNamed(context, '/dev');
+              },
+            ),
           ],
         ),
       ),
@@ -91,21 +100,6 @@ class CustomCard extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-
-class BMIPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('BMI Calculator Page'),
-      ),
-      body: Center(
-        child: Text('BMI Calculator Content Goes Here'),
       ),
     );
   }

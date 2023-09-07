@@ -1,12 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:super_app/config.dart';
 import 'package:super_app/models/recipe_model.dart';
-import 'package:super_app/views/recipes_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class RecipesHome extends StatefulWidget {
   const RecipesHome({super.key});
@@ -154,9 +150,12 @@ class _RecipesHomeState extends State<RecipesHome> {
                         child: ListView.builder(
                           itemCount: recipes.length,
                           itemBuilder: (BuildContext context, int index) {
+                            final recipe = recipes[index];
                             return Card(
                               child: ListTile(
-                                title: Text(recipes[index]?.label ?? "No Label"),
+                                title: Text(recipe?.label ?? "No Label"),
+                                leading: Image.network(recipe?.image ?? "https://via.placeholder.com/150"), // Use a placeholder image if no image URL is available
+                                subtitle: Text("Diet Labels: ${recipe?.dietLabels?.join(', ') ?? 'N/A'}"),
                               ),
                             );
                           },

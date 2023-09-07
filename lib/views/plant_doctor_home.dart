@@ -28,19 +28,22 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
         child: Column(
           children: [
             // Feature Information Card
-            Card(
-              elevation: 4,
-              margin: EdgeInsets.all(16),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    SizedBox(height: 8),
-                    Text(
-                      'This feature employs a TensorFlow Lite classification model, trained on a diverse dataset of plant leaf images. This model helps to recognize and classify various plant diseases, providing users with disease class and a confidence score.',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Card(
+                elevation: 4,
+                margin: EdgeInsets.all(16),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 8),
+                      Text(
+                        'This feature employs a TensorFlow Lite classification model, trained on a diverse dataset of plant leaf images. This model helps to recognize and classify various plant diseases, providing users with disease class and a confidence score.',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
