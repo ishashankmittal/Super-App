@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:percent_indicator/percent_indicator.dart';
 
 class PlantDoctorHome extends StatefulWidget {
   const PlantDoctorHome({Key? key}) : super(key: key);
@@ -14,7 +15,8 @@ class PlantDoctorHome extends StatefulWidget {
 class _PlantDoctorHomeState extends State<PlantDoctorHome> {
   File? _image; // Declare _image as nullable
   String? _result; // Store the classification result
-  bool _isLoading = false; // Track whether the API call is in progress
+  bool _isLoading = false;// Track whether the API call is in progress
+  double? confidence;
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +35,10 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    Text(
-                      'Feature Information',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     SizedBox(height: 8),
                     Text(
-                      'This is a feature description. You can provide details about how this feature works and its benefits.',
-                      style: TextStyle(fontSize: 16),
+                      'This feature employs a TensorFlow Lite classification model, trained on a diverse dataset of plant leaf images. This model helps to recognize and classify various plant diseases, providing users with disease class and a confidence score.',
+                      style: TextStyle(fontSize: 18),
                     ),
                   ],
                 ),
@@ -97,7 +92,7 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       Text(
                         'Classification Result',
                         style: TextStyle(
@@ -111,6 +106,26 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
                           '$_result',
                           style: TextStyle(fontSize: 18),
                         ),
+                      if (_result != null)
+                        CircularPercentIndicator(
+                        radius: 120.0,
+                        lineWidth: 13.0,
+                        animation: true,
+                        percent: confidence!/100,
+                        center: new Text(
+                          "${confidence!}%",
+                          style:
+                          new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                        ),
+                        footer: new Text(
+                          "Confidence Score",
+                          style:
+                          new TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                        ),
+                        circularStrokeCap: CircularStrokeCap.round,
+                        progressColor: Colors.purple,
+                      ),
+                      SizedBox(height:30),
                     ],
                   ),
                 ),
@@ -122,6 +137,7 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           const SizedBox(width: 16),
           FloatingActionButton.extended(
@@ -179,13 +195,14 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
       final request = http.MultipartRequest('POST', Uri.parse(apiUrl));
       request.files.add(await http.MultipartFile.fromPath('image', image.path));
       final client = http.Client();
-      final response = await client.send(request).timeout(Duration(seconds: 30));
+      final response = await client.send(request);
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(await response.stream.bytesToString());
-        final confidence = jsonResponse['confidence']; // Extract confidence value
+        confidence = jsonResponse['confidence'];// Extract confidence value
+        print(confidence);
         setState(() {
           _result = jsonResponse['class_name'];
-          _result = '$_result \n(Confidence: $confidence%)';
+          // _result = '$_result \n(Confidence: $confidence%)';
           _isLoading = false; // Set loading to false when API response is received
         });
       } else {
