@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Inter IIT',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -49,7 +49,6 @@ class MyHomePage extends StatelessWidget {
             CustomCard(
               title: 'Recipes',
               onTap: () {
-                // Navigate to the RecipesPage when the card is tapped
                 Navigator.of(context).pushNamed('/recipes');
               },
             ),

@@ -22,7 +22,6 @@ class _DeveloperState extends State<Developer> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 20),
-            // Display your developer info
             Text(
               'Shashank Mittal',
               style: TextStyle(
@@ -38,30 +37,29 @@ class _DeveloperState extends State<Developer> {
               ),
             ),
             SizedBox(height: 20),
-            // Add any additional developer information or links
             GestureDetector(
               onTap: () {
-                launch(githubURL); // Launch the GitHub URL
+                launch(githubURL);
               },
               child: Text(
-                'GitHub: @ishashankmittal', // Replace with your GitHub username
+                'GitHub: @ishashankmittal',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.blue,
-                  decoration: TextDecoration.underline, // Add underline
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),
             GestureDetector(
               onTap: () {
-                launch(linkedInURL); // Launch the LinkedIn URL
+                launch(linkedInURL);
               },
               child: Text(
-                'LinkedIn: linkedin.com/in/shashankmittal27/', // Replace with your LinkedIn profile URL
+                'LinkedIn: linkedin.com/in/shashankmittal27/',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.blue,
-                  decoration: TextDecoration.underline, // Add underline
+                  decoration: TextDecoration.underline,
                 ),
               ),
             )

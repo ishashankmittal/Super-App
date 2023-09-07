@@ -25,7 +25,6 @@ class _RecipesHomeState extends State<RecipesHome> {
     try {
       final response = await http.get(uri);
       if (response.statusCode == 200) {
-        // Handle the successful response here
         Map<String,dynamic> jsonData=jsonDecode(response.body);
         recipes.clear();
         jsonData["hits"].forEach((element){
@@ -33,16 +32,10 @@ class _RecipesHomeState extends State<RecipesHome> {
           RecipeModel recipeModel =RecipeModel.fromMap(element["recipe"]);
           recipes.add(recipeModel);
         });
-
-
-        // print("${recipes.toString()}");
-        // print(recipes[1].label);
       } else {
-        // Handle any error response here
         print("Error: ${response.statusCode}");
       }
     } catch (e) {
-      // Handle any network or HTTP request error here
       print("Error: $e");
     }
   }
@@ -87,7 +80,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                   color: Colors.white
                 ),),
                 SizedBox(height: 8,),
-                Text("Just enter the ingredients and we show the best recipe for you!",style: TextStyle(
+                Text("Just enter the ingredients and we show the best recipe for you with Diet Labels!",style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                     color: Colors.white
@@ -116,7 +109,6 @@ class _RecipesHomeState extends State<RecipesHome> {
                       InkWell(
                         onTap: (){
                           if(textEditingController.text.isNotEmpty){
-                            // getRecipes(textEditingController.text);
                             print("Just Do It!");
                           }else{
                             print("Not Do It!");
@@ -134,7 +126,6 @@ class _RecipesHomeState extends State<RecipesHome> {
                   future: getRecipes(textEditingController.text),
                   builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      // Display a loading indicator while fetching data
                       return Padding(
                         padding: EdgeInsets.all(30.0), // Adjust the padding as needed
                         child: Center(
@@ -154,7 +145,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                             return Card(
                               child: ListTile(
                                 title: Text(recipe?.label ?? "No Label"),
-                                leading: Image.network(recipe?.image ?? "https://via.placeholder.com/150"), // Use a placeholder image if no image URL is available
+                                leading: Image.network(recipe?.image ?? "https://via.placeholder.com/150"),
                                 subtitle: Text("Diet Labels: ${recipe?.dietLabels?.join(', ') ?? 'N/A'}"),
                               ),
                             );

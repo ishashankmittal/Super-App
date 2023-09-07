@@ -13,9 +13,9 @@ class PlantDoctorHome extends StatefulWidget {
 }
 
 class _PlantDoctorHomeState extends State<PlantDoctorHome> {
-  File? _image; // Declare _image as nullable
-  String? _result; // Store the classification result
-  bool _isLoading = false;// Track whether the API call is in progress
+  File? _image;
+  String? _result;
+  bool _isLoading = false;
   double? confidence;
 
   @override
@@ -47,7 +47,6 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
                 ),
               ),
             ),
-            // Image Container Card
             Container(
               width: MediaQuery.of(context).size.width,
               child: Card(
@@ -162,15 +161,13 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
-        _isLoading = true; // Set loading to true when initiating API call
+        _isLoading = true;
         print("Image uploaded: ${_image!.path}");
-        _result = null; // Clear the previous result
+        _result = null;
       });
 
-      // Call the API to classify the image
       classifyImage(_image!);
     } else {
-      // Handle the case where the user didn't select an image
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -192,7 +189,7 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
   }
 
   Future<void> classifyImage(File image) async {
-    final apiUrl = 'https://apitest-6gkp.onrender.com/classify'; // Replace with your API URL
+    final apiUrl = 'https://apitest-6gkp.onrender.com/classify';
 
     try {
       final request = http.MultipartRequest('POST', Uri.parse(apiUrl));
@@ -205,19 +202,18 @@ class _PlantDoctorHomeState extends State<PlantDoctorHome> {
         print(confidence);
         setState(() {
           _result = jsonResponse['class_name'];
-          // _result = '$_result \n(Confidence: $confidence%)';
-          _isLoading = false; // Set loading to false when API response is received
+          _isLoading = false;
         });
       } else {
         print('Error: ${response.statusCode}');
         setState(() {
-          _isLoading = false; // Set loading to false on error
+          _isLoading = false;
         });
       }
     } catch (e) {
       print('Error: $e');
       setState(() {
-        _isLoading = false; // Set loading to false on exception
+        _isLoading = false;
       });
     }
   }

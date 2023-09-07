@@ -28,7 +28,7 @@ class _BMIPageState extends State<BMIPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('BMI Calculator Page'),
+        title: Text('BMI Calculator'),
       ),
       body: Container(
         color: bgColor,
@@ -169,12 +169,8 @@ class _BMIPageState extends State<BMIPage> {
                 ),
               ),
               SizedBox(height: 16),
-              // Calculate BMI Button
               Container(
                 child: ElevatedButton(
-                  style: ButtonStyle(
-                    // backgroundColor: MaterialStateProperty.all<Color>(cardBg),
-                  ),
                   onPressed: () {
                     calculateBMI();
                   },
@@ -197,15 +193,12 @@ class _BMIPageState extends State<BMIPage> {
     if (_validateInput(weightController.text) &&
         _validateInput(feetController.text) &&
         _validateInput(inchesController.text)) {
-      // Convert input to numeric values
       double weight = double.parse(weightController.text);
       int feet = int.parse(feetController.text);
       int inches = int.parse(inchesController.text);
 
-      // Convert height to meters
       double heightInMeters = (feet * 12 + inches) * 0.0254;
 
-      // Calculate BMI
       double calculatedBMI = weight / (heightInMeters * heightInMeters);
 
       setState(() {
@@ -213,7 +206,6 @@ class _BMIPageState extends State<BMIPage> {
         bmiCategory = getBMICategory(calculatedBMI);
       });
     } else {
-      // Show an error message if input is invalid
       setState(() {
         bmi = 0.0;
         bmiCategory = '';
