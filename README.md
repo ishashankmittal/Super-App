@@ -2,6 +2,12 @@
 
 A Flutter App for INTER IIT App Dev Team Selection PS.
 
+<p float="left">
+  <img src="https://github.com/ishashankmittal/Super-App/assets/117439240/9e6622f9-ab09-4afe-af77-05ccf8b10fad" width="300" />
+  <img src="https://github.com/ishashankmittal/Super-App/assets/117439240/578a3ff5-b3ff-48d6-8b7a-b83c40b363c3" width="300" /> 
+  <img src="https://github.com/ishashankmittal/Super-App/assets/117439240/e57acf67-6346-4800-a08b-ded16d058b53" width="300" />
+</p>
+
 Screen Recording Link: https://drive.google.com/file/d/1c-mrxv1hazLIybP35BzHLpmGo8hzBVQi/view?usp=sharing
 
 Debug APK link: https://drive.google.com/file/d/1GNUKPh7SMWuToSSzzU5FlLrRmldjWe6j/view?usp=sharing
@@ -36,9 +42,6 @@ Dataset used - PlantDoc Dataset for Disease Classification
 https://github.com/pratikkayal/PlantDoc-Dataset
 
 I have used Teachable Machine to train this model. First I downloaded the dataset and uploaded the train images in 28 classes and then trained and exported the .tflite file.
-<img width="800" alt="Screenshot 2023-09-07 at 6 22 40 PM" src="https://github.com/ishashankmittal/Super-App/assets/117439240/0a0c04b9-160c-49d4-a90f-664f6be4fe66">
-
-
 
 Now I wrote a flask Api to handle the ```/classify``` POST requests and hosted the flask app on render.com .
 Link to the api : https://github.com/ishashankmittal/flaskApi
